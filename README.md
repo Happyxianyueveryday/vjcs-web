@@ -91,18 +91,15 @@
                  |-- redis_queue.py: redis生产者-消费者模型队列，本项目默认使用的消息队列配置
   ```
   
-  ## 4. 算法部署的方法简介
+  ## 4. 算法部署方法
   
-  Step 1: 将需要部署的算法以单个方法的放入contained文件夹下，请保持方法名和模块名一致
+  Step 1: 将需要部署的算法模块(.py文件)放入根目录的contained文件夹下。
   
-  Step 2: 导入根目录下的container模块，初始化一个Container对象
+  Step 2: 打开项目根目录下的run_algorithm.py文件，修改如下的代码片段，修改algorithm_contained方法的modelname和algoname参数，modelname为模块名，algoname为函数名。例如这里要调用contained文件夹下的reshape模块的reshape函数，调用方法如下所示。
   ```
-  container = Container()                                # 初始化算法容器
-  ```
-  
-  Step 3: 调用Container对象的algorithm_contained成员方法，参数为函数名，返回值即为目标算法的方法对象
-  ```
-  my_algorithm = container.algorithm_contained(algoname='my_algotithm')      # 从算法容器获得算法的方法对象
+  algofunc = container.algorithm_contained(modelname='reshape', algoname='reshape')  # 根据算法函数名获取函数对象，这里使用的测试算法函数是reshape模块的reshape算法函数
+            
+  algofunc(filedir, resultdir)   # 调用算法函数（具体参数根据需要部署的算法函数确定）
   ```
   
   ## 5. 后台异步处理
