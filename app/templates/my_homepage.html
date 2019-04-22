@@ -1,0 +1,209 @@
+<!-- my_homepage.html——个人主页模板-->
+
+<!--形参列表: 
+    title -- 页面标题，类型为str (该参数为基模板base_navigation_bar.html所接受的参数)
+    user={'username'(str): '用户名', 'email'(str): '邮箱'} -- 当前用户账户信息
+    posts=[{'author'(str):'用户名', 'time'(str):'时间', 'body'(str):动态文字}] -- 用户所关注的人的动态推送信息列表
+    my_posts=[{'id'(int):'任务id' ,'time'(str):'时间', 'body'(str):动态文字}] -- 用户自身发送的任务动态
+    follower=[User] -- 当前用户的粉丝列表
+    followed=[User] -- 当前用户的关注列表
+-->
+
+<!-- 1. 继承base_navigation_bar.html实现基本导航栏 -->
+{% extends "base_navigation_bar.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block content %}
+
+<style>
+/* Custom Styles */
+    ul.nav-tabs{
+        width: 140px;
+        margin-top: 20px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+    }
+    ul.nav-tabs li{
+        margin: 0;
+        border-top: 1px solid #ddd;
+    }
+    ul.nav-tabs li:first-child{
+        border-top: none;
+    }
+    ul.nav-tabs li a{
+        margin: 0;
+        padding: 8px 16px;
+        border-radius: 0;
+    }
+    ul.nav-tabs li.active a, ul.nav-tabs li.active a:hover{
+        color: #fff;
+        background: #0088cc;
+        border: 1px solid #0088cc;
+    }
+    ul.nav-tabs li:first-child a{
+        border-radius: 4px 4px 0 0;
+    }
+    ul.nav-tabs li:last-child a{
+        border-radius: 0 0 4px 4px;
+    }
+    ul.nav-tabs.affix{
+        top: 30px; /* Set the top position of pinned element */
+    }
+</style>
+
+</head>
+<body data-spy="scroll" data-target="#myScrollspy">
+<div class="container">
+   <div class="jumbotron">
+        <h3>个人主页</h3>
+    </div>
+    <div class="row">
+        <div class="col-xs-3" id="myScrollspy">
+            <ul class="nav nav-tabs nav-stacked" data-spy="affix" data-offset-top="125">
+                <li class="active"><a href="#section-1">关于我</a></li>
+                <li><a href="#section-2">动态</a></li>
+                <li><a href="#section-3">我的任务</a></li>
+                <li><a href="#section-4">我关注的人</a></li>
+                <li><a href="#section-5">我的粉丝</a></li>
+            </ul>
+        </div>
+        <div class="col-xs-9">
+            <h3 id="section-1">关于我</h3>
+            <p>用户名: {{user.username}}</p>
+            <p>邮箱地址: {{user.email}}</p>
+            <hr>
+
+            <h3 id="section-2">动态</h3>
+            <p>
+                {% if posts %}
+                {% for post in posts %}
+                <div>
+                    <p>{{post.author}} 在 {{post.time}} 发布了任务: {{post.body}}</p>  
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" 
+                                href="#collapseOne">
+                                点击显示或隐藏任务文件
+                            </a>
+                        </h4>
+                    </div>
+
+                    <div id="collapseOne" class="panel-collapse collapse in">  <!--collapse in 默认展开，collapse默认折叠-->
+                        <div class="panel-body">
+                            <div class="col-sm-6 col-md-3">
+                                <a href="#" class="thumbnail">
+                                    <img src="{{url_for('static',filename=post.filedir)}}" alt="任务文件">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>暂无关注的新动态</p>
+                {% endif %}
+            </p>
+            <hr>
+
+            <h3 id="section-3">我的任务</h3>
+            <p>
+                {% if my_posts %}
+                {% for my_post in my_posts %}
+                <div>
+                    <p>
+                        <div> 我在 {{my_post.time}} 发表了我的任务: {{my_post.body}} </div>
+                        <div></div>
+                        <div>
+                        任务状态: 
+                        {% if not my_post.state %}
+                        排队中
+                        {% else %}
+                        已完成
+                        {% endif %}
+                        </div>
+
+                        {% if my_post.state %}
+                        <button type="button" class="btn btn-info">
+                            <a href="{{url_for('static',filename=my_post.resultdir)}}">下载结果文件</a>
+                        </button>
+                        {% endif %}
+                        <button type="button" class="btn btn-warning">
+                            <a href="{{url_for('delweibo', id=my_post.id)}}">删除任务</a>
+                        </button>
+                    </p>  
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion" 
+                                   href="#collapseOne">
+                                   点击显示或隐藏任务文件
+                                </a>
+                            </h4>
+                        </div>
+
+                        <div id="collapseOne" class="panel-collapse collapse in">  <!--collapse in 默认展开，collapse默认折叠-->
+                            <div class="panel-body">
+                                <div class="col-sm-6 col-md-3">
+                                    <a href="#" class="thumbnail">
+                                        <img src="{{url_for('static',filename=my_post.filedir)}}" alt="原始文件">
+                                    </a>
+                                    {% if my_post.state %}
+                                    <a href="#" class="thumbnail">
+                                        <img src="{{url_for('static',filename=my_post.resultdir)}}" alt="结果文件">
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>您还没有发布任何任务，请尝试点击新任务按钮，创建第一个处理任务</p>
+                {% endif %}
+            </p>
+            <hr>
+
+            <h3 id="section-4">我关注的人</h3>
+            {% if followed %}
+            {% for x in followed %}
+            <div>
+                <p>
+                    用户名: {{x.username}}  邮箱: {{x.email}}
+                    <button type="button" class="btn btn-danger">
+                        <a href="{{url_for('unfollow', username=x.username)}}">取消关注</a>
+                    </button>
+                </p>  
+            </div>
+            {% endfor %}
+            {% else %}
+            <p>暂无关注的人</p>
+            {% endif %}
+            <hr>
+
+            <h3 id="section-5">我的粉丝</h3>
+            {% if follower %}
+            {% for x in follower %}
+            <div>
+                <p>
+                    用户名: {{x.username}}  邮箱: {{x.email}}
+                </p>  
+            </div>
+            {% endfor %}
+            {% else %}
+            <p>暂无粉丝</p>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+{% endblock %}

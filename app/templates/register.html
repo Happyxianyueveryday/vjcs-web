@@ -1,0 +1,21 @@
+<!-- login.html——用户注册模板-->
+<!--形参列表: 
+    form -- 要求为一个RegisterForm类对象，RegisterForm对象能够自动解析成HTML语言片段
+    附注: RegisterForm类的定义请参见'/forms.py'，包含四个自动解析的片段，即RegisterForm={username, email, password, password_repeat, submit}
+
+    title -- 父模板base_navigation_bar.html的参数，类型为str，指定页面名称
+-->
+
+
+{% extends "base_navigation_bar.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block content %}
+<form action="" method="post" name="login">   <!--<form>标签定义一个表单，method指定传送方法，敏感数据仅能使用HTML的post方法，表单名字为login-->
+    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,24 @@
+<html>
+  <head>
+    {% if title %}
+    <title>{{title}} - microblog</title>
+    {% else %}
+    <title>Welcome!</title>
+    {% endif %}
+  </head>
+  <body>
+      {% if user %}
+      <h1>Hello, {{user.nickname}}!</h1>
+      {% else %}
+      <h1>Hello, Passanger!</h1>
+      {% endif %}
+
+      {% if paper %}
+      {% for x in paper %}
+      <h1>Artical "{{x.title}}" of author "{{x.author}}"</h1>
+      {% endfor %}
+      {% else %}
+      <h2>No articals</h2>
+      {% endif %}
+  </body>
+</html>

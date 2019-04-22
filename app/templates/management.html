@@ -1,0 +1,60 @@
+<!-- addweibo.html——个人账户信息管理模板-->
+<!--形参列表: 
+    form -- 要求为一个ManageForm类对象，ManageForm对象能够自动解析成HTML语言片段，ManageForm={description:'个人描述', sign:'个性签名', job:'个人职业', location: '居住地址'}
+    user -- 用户账户信息对象
+    附注: ManageForm类的定义请参见'/forms.py',User类的定义请参见'/models.py'
+
+    title -- 父模板base_navigation_bar.html的参数，类型为str，指定页面名称
+-->
+
+
+{% extends "base_navigation_bar.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block content %}
+
+<div class="panel-group" id="accordion">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a data-toggle="collapse" data-parent="#accordion" 
+				   href="#collapseOne">
+					个人信息查看
+				</a>
+			</h4>
+		</div>
+		<div id="collapseOne" class="panel-collapse collapse in">
+			<div class="panel-body">
+                <h4>账户名: {{user.username}} </h4>
+                <h4>邮箱: {{user.email}}</h4>
+                <h4>自我描述: {{user.description}}</h4>
+                <h4>个性签名: {{user.sign}}</h4>
+                <h4>职业: {{user.job}}</h4>
+                <h4>居住地区: {{user.location}}</h4>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				<a data-toggle="collapse" data-parent="#accordion" 
+				   href="#collapseTwo">
+					个人信息编辑
+				</a>
+			</h4>
+		</div>
+		<div id="collapseTwo" class="panel-collapse collapse">
+			<div class="panel-body">
+				<form action="" method="post" name="login">   <!--<form>标签定义一个表单，method指定传送方法，敏感数据仅能使用HTML的post方法，表单名字为login-->
+                    <div class="row">
+                        <div class="col-md-4">
+                            {{ wtf.quick_form(form) }}
+                        </div>
+                    </div>
+                </form>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
