@@ -75,11 +75,12 @@
   ```
   / -- |-- run.py: 可执行脚本文件
        |-- run_algorithm.py: 可执行脚本文件，同时执行该文件和上述的run.py即可运行本项目
+       |-- contained: 算法容器文件夹，需要部署的算法以模块形式(.py文件)放入该文件夹
        |-- db_create.py: 数据库新建脚本
        |-- db_migrate.py: 数据库迁移脚本（使用方法：先迁移后更新）
        |-- db_update.py: 数据库更新脚本（使用方法：先迁移后更新）
        |-- config.py: 项目配置文件
-       |-- container.py: 实际部署的算法容器
+       |-- container.py: 算法容器类
        |-- app --|
                  |-- templates: 包含flask模板(templates)的文件夹
                  |-- static: 包含用户上传的静态文件的文件夹
