@@ -96,22 +96,21 @@
   
   4月22日对算法容器部分进行了简单重写，目前提供一个基于反射机制的算法容器来实现算法的快速部署。下面简要介绍快速部署算法的基本方法：
   
-  1. 将需要部署的算法以模块文件(.py)的形式放入自定义的文件夹中。我们假设将要部署的算法以模块module.py的形式放在文件夹：C:\Users\PZH\Desktop\algorithm下。
+  1. 部署算法文件：将需要部署的算法以模块文件(.py)的形式放入自定义的文件夹中。我们假设将要部署的算法以模块reshape.py的形式放在文件夹：C:\Users\PZH\Desktop\algorithm下。
   
-  2. 初始化算法容器，给定绝对路径初始化算法容器类Container。
+  2. 初始化算法容器：给定上述自定义文件夹的绝对路径来初始化一个算法容器类Container的对象。
   
   ```
   from container import Container 
-  container_path = 'C:\Users\PZH\Desktop\algorithm'
+  container_path = 'C:\\Users\\PZH\\Desktop\\algorithm'
   container = Container(container_path)              # 初始化算法容器
   ```
   
-  3. 获取算法函数
+  3. 获取算法对象：使用Container类的algorithm_contained方法来获取算法对象，该方法接受两个参数：modelname指定模块名，algoname指定算法对象名，该方法返回对应的算法对象，算法对象可以是一个函数或者是一个类。
   ```
-  获取对象
-  algofunc = container.algorithm_contained(modelname='reshape', algoname='reshape')  
+  algofunc = container.algorithm_contained(modelname='reshape', algoname='reshape')  # 获取算法对象
+  algofunc(source_dir, result_dir)     # 使用获得的算法对象（这里获得的算法对象是一个函数
   ```
- 
   
   
   ## 5. 后台异步处理
