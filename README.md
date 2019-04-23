@@ -94,14 +94,25 @@
   
   ## 4. 算法部署方法
   
-  Step 1: 将需要部署的算法模块(.py文件)放入根目录的contained文件夹下。
+  4月22日对算法容器部分进行了简单重写，目前提供一个基于反射机制的算法容器来实现算法的快速部署。下面简要介绍快速部署算法的基本方法：
   
-  Step 2: 打开项目根目录下的run_algorithm.py文件，修改如下的代码片段，修改algorithm_contained方法的modelname和algoname参数，modelname为模块名，algoname为函数名。例如这里要调用contained文件夹下的reshape模块的reshape函数，调用方法如下所示。
+  1. 将需要部署的算法以模块文件(.py)的形式放入自定义的文件夹中。我们假设将要部署的算法以模块module.py的形式放在文件夹：C:\Users\PZH\Desktop\algorithm下。
+  
+  2. 初始化算法容器，给定绝对路径初始化算法容器类Container。
+  
   ```
-  algofunc = container.algorithm_contained(modelname='reshape', algoname='reshape')  # 根据算法函数名获取函数对象，这里使用的测试算法函数是reshape模块的reshape算法函数
-            
-  algofunc(filedir, resultdir)   # 调用算法函数（具体参数根据需要部署的算法函数确定）
+  from container import Container 
+  container_path = 'C:\Users\PZH\Desktop\algorithm'
+  container = Container(container_path)              # 初始化算法容器
   ```
+  
+  3. 获取算法函数
+  ```
+  获取对象
+  algofunc = container.algorithm_contained(modelname='reshape', algoname='reshape')  
+  ```
+ 
+  
   
   ## 5. 后台异步处理
   因为考虑到具体部署时只有一台服务器，此版本使用的是简单的生产者-消费者模型的消息队列，本项目同样可以配置成使用发布者-订阅者模型工作。
@@ -109,7 +120,5 @@
   ## 6. 后期预告
   Android客户端接口稍后更新上线。
   
-  ## 7. 更新简要记录
-  4月22日：重写算法容器模块
   
   
