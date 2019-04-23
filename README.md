@@ -111,6 +111,12 @@
   algofunc = container.algorithm_contained(modelname='reshape', algoname='reshape')  # 获取算法对象
   algofunc(source_dir, result_dir)     # 使用获得的算法对象（这里获得的算法对象是一个函数
   ```
+  特别地，在本项目中，只需要打开根目录下的run_algorithm.py文件，修改第45~47行的代码的参数即可，原始代码如下所示。
+  ```
+  container_path = sys.path[0]+'\\'+'contained'
+  container = Container(container_path)                                              # 初始化算法容器
+  algofunc = container.algorithm_contained(modelname='reshape', algoname='reshape')  # 根据算法函数名获取函数对象，这里使用的测试算法函数是reshape模块的reshape算法函数
+  ```
   
   
   ## 5. 后台异步处理
